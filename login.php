@@ -34,6 +34,10 @@
                             <input type="submit" name="submit" id="submit" class="form-submit" value="Log in"
                                 style="cursor: pointer;" />
                         </div>
+                        <div class="form-group">
+                            <input type="submit" name="submit" id="submit" class="form-submit" value="Log in"
+                                style="cursor: pointer;" />
+                        </div>
                     </form>
                     <p class="loginhere">
                         Don't have an account? <a href="register.html" class="loginhere-link">Register Here</a>
