@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+
+    <style>
+        .app-container {
+            height: 100vh;
+            width: 100%;
+        }
+
+        .complete {
+            text-decoration: line-through;
+        }
+    </style>
+
+<script>
+    const xhr = new XMLHttpRequest();
+    var content = '';
+    var content2 = '';
+    xhr.open('get', 'http://localhost:3000/api/index.php/todo', true);
+    xhr.send();
+    xhr.onload = function () {
+        console.log(xhr.responseText);
+        console.log(JSON.parse(this.responseText));
+        var x = JSON.parse(this.responseText);
+        // http://localhost:3000/delete.html?id=5
+        // http://localhost:3000/delete.html?6=
+        // document.querySelector('#consume_webservice').innerHTML = xhr.responseText;
+        for (let i = 0; i < x.length; i++) {
+            var k = x[i].id;
+            content += "<tr>" + "<td>" + x[i].id + "</td>"+ "<td>" + x[i].task + "</td>" + "<td>" + x[i].status + "</td>" +"</td>" + "<td>" + x[i].target + "</td>" +
+            "<td>" + "<form action='' onsubmit='del(this)' id = 'frmdata'>" + 
+                "<input type= 'hidden' name ='id' value = '"+x[i].id +"'>" +
+                "<button class = 'btn btn-danger' type = 'submit' style= 'margin-right: 10px;'>" + "Delete" + "</button>" + "</form>"+ 
+             "</td>" +"</tr>";
+            content2 = x[i].username;
+        }
+        document.getElementById("item").innerHTML = content;
+        document.getElementById("user").innerHTML = content2;
+        
+    }
+</script>
+</head>
+
+<body>
+    <div class="app-container d-flex align-items-center justify-content-center flex-column" ng-app="myApp"
+        ng-controller="myController">
+        {{ task_name }}
+        <h3>Todo App - Delete Task</h3>
+        <div class="d-flex align-items-center mb-3">
+            <a href="add.html"><button type="button" class="btn btn-primary mr-3" ng-click="saveTask()">
+                Add Task
+            </button></a>
+            <a href="test.html"><button type="button" class="btn btn-warning" ng-click="getTask()" style="margin-right: 15px;">
+                View All Task
+            </button></a>
+            <a href="update.html"><button type="button" class="btn btn-info" ng-click="getTask()">
+                Update Task
+            </button></a>
+
+            <!-- <form action="" onsubmit="del(this)" id="frmdata">
+                <label for="id" style="color:grey;">ID</label>
+                <br>
+                <input type="text" id="id" name="id">
+                <br>
+        
+                <button type="submit">Submit</button>
+            </form> -->
+        </div>
+        
+        <p id="user"></p>
+        <div class="table-wrapper">
+            <table class="table table-hover table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Todo item</th>
+                        <th>status</th>
+                        <th>Target</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="item">
+                    
+                </tbody>
+            </table>
+        </div>
+    </div>
+    
+
+
+    <script>
+        // handle form submit
+        function del(event) {
+    
+            // form values
+            var id = event.id.value;
+    
+            var data = new FormData();
+    
+            var http = new XMLHttpRequest();
+    
+            var url = 'http://localhost:3000/api/index.php/todo/"' +id +'"';
+            http.open('delete', url);
+    
+            http.onreadystatechange = function() {
+                if (http.readyState == 4 && http.status == 200) {
+                    // alert("Form submitted successfully");
+                    // document.getElementById("frmdata").reset();
+                    console.log(http.responseText);
+                }
+            }
+            http.send(data);
+        }
+    </script>
+
+
+
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>
